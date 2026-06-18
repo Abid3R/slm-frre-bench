@@ -44,12 +44,16 @@ GRID_MODELS = [
     "HuggingFaceTB/SmolLM2-1.7B-Instruct",
     "microsoft/phi-2",
 ]
+# fp16 (not 4-bit): every model here is <=2.7B and fits on a single T4 in fp16,
+# so we skip bitsandbytes entirely. The 4-bit path needs a bitsandbytes build that
+# matches Kaggle's CUDA/triton; fp16 has no such dependency and is more robust.
 subprocess.run([
     sys.executable, "-m", "src.run",
     "--models", *GRID_MODELS,
     "--tasks", "crows_pairs", "adv_sst2", "sst2",
     "--limit", "300",
     "--seeds", "42",
+    "--no-4bit",
 ], check=True)
 
 # --- Inspect results (handles the schema-fork _new.csv fallback) -------------
