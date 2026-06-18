@@ -1,0 +1,9 @@
+# Minimal CPU set for the local smoke test (no GPU packages).
+# Drops bitsandbytes (GPU-only) and codecarbon (optional; harness runs without it).
+# Use the full requirements.txt on Kaggle/Colab where a GPU is present.
+torch>=2.1
+transformers==4.44.2
+datasets==2.21.0
+numpy==1.26.4
+pandas==2.2.2
+tqdm==4.66.5

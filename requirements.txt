@@ -1,0 +1,23 @@
+# Core
+torch>=2.1
+transformers==4.44.2
+datasets==2.21.0
+evaluate==0.4.3
+accelerate==0.34.2
+
+# Quantization (fit 2-3B models on a free T4)
+bitsandbytes==0.43.3
+
+# Energy measurement
+codecarbon==2.7.1
+
+# Robustness perturbations (optional; only needed for adversarial tasks)
+# textattack==0.3.10
+
+# Analysis / plots
+scikit-learn==1.5.2
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.9.2
+seaborn==0.13.2
+tqdm==4.66.5
