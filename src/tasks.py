@@ -16,7 +16,7 @@ import random
 from datasets import load_dataset
 
 from configs.tasks import TASKS
-from src.scoring import sentence_log_likelihood, zero_shot_classify
+from src.scoring import sentence_log_likelihood, zero_shot_classify, null_label_scores
 
 
 # ---------------------------------------------------------------------------
@@ -82,13 +82,18 @@ def _perturb(text: str, rate: float, rng: random.Random) -> str:
 
 def _run_classification(model, tokenizer, ds, labels, text_field, device, rng,
                         perturb_rate=0.0):
+    # Contextual calibration: compute each label's prior under a null prompt ONCE,
+    # then subtract it from every example. This removes the per-model label bias
+    # that otherwise pins weak models to chance accuracy.
+    null = null_label_scores(model, tokenizer, labels, device=device)
     correct = 0
     n = 0
     for ex in ds:
         text = ex[text_field]
         if perturb_rate > 0:
             text = _perturb(text, perturb_rate, rng)
-        pred = zero_shot_classify(model, tokenizer, text, labels, device=device)
+        pred = zero_shot_classify(model, tokenizer, text, labels, device=device,
+                                  null_scores=null)
         correct += int(pred == int(ex["label"]))
         n += 1
     return (100.0 * correct / n if n else float("nan")), n
