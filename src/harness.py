@@ -139,7 +139,7 @@ def evaluate_model(
     total_inferences = 0
     for task in tasks:
         metrics, n_inf = run_task(task, model, tokenizer, device=device,
-                                  limit=limit, seed=seed)
+                                  limit=limit, seed=seed, model_name=row["model"])
         # flatten nested dicts (e.g. fairness_by_bias_type) into JSON-ish strings
         for k, v in metrics.items():
             row[k] = v if not isinstance(v, dict) else str(v)
