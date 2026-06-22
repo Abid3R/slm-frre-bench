@@ -84,7 +84,3 @@ slm-frre-bench/
 - All datasets are open (licenses noted in `configs/tasks.py`).
 - Raw model outputs + scores saved to `results/`.
 
-## AI-assistance disclosure
-
-This scaffold was generated with AI assistance. All metric definitions, dataset
-licenses, and experimental claims must be independently verified before publication.
